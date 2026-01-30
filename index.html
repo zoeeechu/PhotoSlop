@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<body style="font-family:sans-serif; text-align:center;">
+<h1>Controller</h1>
+
+<div id="status">Connecting...</div>
+
+<button onclick="move('left')" id="leftBtn" disabled>LEFT</button>
+<button onclick="move('right')" id="rightBtn" disabled>RIGHT</button>
+<script>
+let socket;
+
+function getWsUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const wsFromQuery = params.get("ws");
+
+    if (wsFromQuery) {
+        console.log("Using WS from query:", wsFromQuery);
+        return wsFromQuery;
+    }
+
+    // fallback (local dev)
+    return (location.protocol === "https:" ? "wss://" : "ws://") +
+           location.host +
+           "/game";
+}
+
+function connect() {
+    const wsUrl = getWsUrl();
+    socket = new WebSocket(wsUrl);
+
+    console.log("Connecting to:", wsUrl);
+
+    socket.onopen = () => {
+        document.getElementById("status").textContent = "Connected ✓";
+        document.getElementById("status").style.color = "green";
+        leftBtn.disabled = rightBtn.disabled = false;
+    };
+
+    socket.onmessage = e => console.log("From Unity:", e.data);
+
+    socket.onerror = () => {
+        document.getElementById("status").textContent = "Connection error";
+        document.getElementById("status").style.color = "red";
+    };
+
+    socket.onclose = () => {
+        document.getElementById("status").textContent = "Disconnected – Reconnecting...";
+        document.getElementById("status").style.color = "orange";
+        leftBtn.disabled = rightBtn.disabled = true;
+        setTimeout(connect, 2000);
+    };
+}
+
+connect();
+</script>
+
+<input id="msg">
+<button onclick="sendText()">Send</button>
+
+</body>
+</html>

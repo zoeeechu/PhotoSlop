@@ -25,6 +25,8 @@ function getWsUrl() {
            "/game";
 }
 
+
+
 function connect() {
     const wsUrl = getWsUrl();
     socket = new WebSocket(wsUrl);
@@ -51,6 +53,12 @@ function connect() {
         setTimeout(connect, 2000);
     };
 }
+
+function sendText() {
+    const text = document.getElementById("msg").value;
+    socket.send(text);
+}
+
 
 connect();
 </script>

@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html>
-<body style="font-family:sans-serif; text-align:center;">
-<h1>Controller</h1>
-
-<div id="status">Connecting...</div>
-
-<button onclick="move('left')" id="leftBtn" disabled>LEFT</button>
-<button onclick="move('right')" id="rightBtn" disabled>RIGHT</button>
-
-<input id="msg">
-<button onclick="sendText()">Send</button>
-
-<script type="module" src="/src/controller.ts"></script>
+<head>
+    <title>PhotoSlop Controller</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script type="module" src="/src/controller.ts"></script>
 </body>
 </html>

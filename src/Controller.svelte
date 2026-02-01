@@ -14,6 +14,7 @@
 
   let page = "enter";
   let name = "";
+  let selectedCharacter: string | null = null;
 
   function getWsUrl() {
     const params = new URLSearchParams(window.location.search);
@@ -68,13 +69,21 @@
     socket.send(direction);
   }
 
+  function selectCharacter(character: string) {
+    socket.send(JSON.stringify({
+      type: "icon-selection",
+      from: "client",
+      icon: character
+    }));
+  }
+
   function sendText() {
-    message = {
-      type: "entry",
-      name: name,
-    };
+    socket.send(JSON.stringify({
+      type: "name-entry",
+      from: "client",
+      name: name
+    }));
     page = "game";
-    socket.send(JSON.stringify(message));
   }
 
   onMount(() => {
@@ -94,7 +103,7 @@
       <h1 class="text-3xl">pick your character:</h1>
     </div>
     <div>
-    <CharacterSelector />
+    <CharacterSelector bind:selected={selectedCharacter} onSelect={selectCharacter} />
 
     </div>
     <div class="flex flex-row gap-3">

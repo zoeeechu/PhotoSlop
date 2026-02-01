@@ -2,8 +2,9 @@
   import { onMount } from "svelte";
   import StatusBanner from "./StatusBanner.svelte";
   import CharacterSelector from "./CharacterSelector.svelte";
+  import DrawingMicrogame from "./DrawingMicrogame.svelte";
   import type { GamePacket } from "./lib/types/packets";
-  import { handlePacket } from "./lib/network/handlePacket";
+  import { handlePacket, availableIcons, nameValidated, microgameData, playerGuid, displayText } from "./lib/network/handlePacket";
   let socket: WebSocket;
   let status = "Connecting...";
   let statusVisible = false;
@@ -15,6 +16,10 @@
   let page = "enter";
   let name = "";
   let selectedCharacter: string | null = null;
+
+  $: if ($nameValidated) {
+    page = "game";
+  }
 
   function getWsUrl() {
     const params = new URLSearchParams(window.location.search);
@@ -83,7 +88,15 @@
       from: "client",
       name: name
     }));
-    page = "game";
+  }
+
+  function handleMicrogameComplete(percentage: number) {
+    socket.send(JSON.stringify({
+      type: "microgame-result",
+      from: "client",
+      id: $playerGuid,
+      percentage: percentage
+    }));
   }
 
   onMount(() => {
@@ -94,7 +107,14 @@
 
 <StatusBanner {status} {statusColor} bind:statusVisible />
 
-{#if page === "enter"}
+{#if $microgameData}
+  <DrawingMicrogame 
+    mask={$microgameData.mask} 
+    timeLimit={$microgameData.time} 
+    direction={$microgameData.direction}
+    onComplete={handleMicrogameComplete}
+  />
+{:else if page === "enter"}
   <div class="gap-2 p-5 mt-2 flex flex-col items-center justify-center">
     <div class="flex items-center justify-center">
       <img src="/images/logo.svg" alt="Logo" class="logo w-30 mt-5" />
@@ -103,7 +123,7 @@
       <h1 class="text-3xl">pick your character:</h1>
     </div>
     <div>
-    <CharacterSelector bind:selected={selectedCharacter} onSelect={selectCharacter} />
+    <CharacterSelector bind:selected={selectedCharacter} available={$availableIcons} onSelect={selectCharacter} />
 
     </div>
     <div class="flex flex-row gap-3">
@@ -135,6 +155,10 @@
       <h1 class="text-5xl">Hey, {name}!</h1>
     </div>
 
-    <p>Look at the main screen...</p>
+    {#if $displayText}
+      <p class="text-4xl mt-4">{$displayText}</p>
+    {:else}
+      <p>Look at the main screen...</p>
+    {/if}
   </div>
 {/if}

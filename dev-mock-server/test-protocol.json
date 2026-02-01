@@ -19,11 +19,6 @@
     "icon": "potat"
 }
 {
-    "type": "icon-disabled",
-    "from": "server",
-    "icon": "cubert"
-}
-{
     "type": "name-entry",
     "from": "client",
     "name": "Novel"
@@ -561,7 +556,11 @@
     "type": "microgame-result",
     "from": "client",
     "id": "1",
-    "percentage": 73.3
+    "results": [
+        {"x": 100, "y":100},
+        {"x": 150, "y":200},
+        {"x": 100, "y":100}
+    ]
 }
 {
     "type": "microgame-end",
@@ -571,4 +570,4 @@
     "type": "display-text",
     "from": "server",
     "text": "You won!"
-}
+}2

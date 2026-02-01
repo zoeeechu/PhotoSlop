@@ -5,7 +5,7 @@
   export let mask: { x: number; y: number }[] = [];
   export let timeLimit: number = 5.0;
   export let direction: string = "";
-  export let onComplete: (percentage: number) => void;
+  export let onComplete: (result: { x: number; y: number }[]) => void;
 
   let canvasContainer: HTMLDivElement;
   let p5Instance: p5;
@@ -15,6 +15,7 @@
   let gameActive = true;
   let scaledMask: { x: number; y: number }[] = [];
   let scale = 1;
+  let scaledDrawnPoints: { x: number; y: number }[] = [];
 
   onMount(() => {
     const sketch = (p: p5) => {
@@ -120,6 +121,8 @@
     return Math.min(100, (matchCount / scaledMask.length) * 100);
   }
 
+  
+
   function endGame(p: p5) {
     if (!gameActive) return;
     gameActive = false;
@@ -133,7 +136,17 @@
     p.text("DONE!", p.width / 2, p.height / 2);
     
     const percentage = calculateMatchPercentage();
-    onComplete(percentage);
+
+    scaledDrawnPoints = []
+
+    for (const drawnPoint of drawnPoints) {
+      let newPoint = drawnPoint;
+      newPoint.x = newPoint.x / scale;
+      newPoint.y = newPoint.y / scale;
+      scaledDrawnPoints.push(newPoint)
+    }
+
+    onComplete(scaledDrawnPoints);
   }
 
   onDestroy(() => {

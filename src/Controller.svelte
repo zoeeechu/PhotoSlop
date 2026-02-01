@@ -90,12 +90,12 @@
     }));
   }
 
-  function handleMicrogameComplete(percentage: number) {
+  function handleMicrogameComplete(result: { x: number; y: number }[]) {
     socket.send(JSON.stringify({
       type: "microgame-result",
       from: "client",
       id: $playerGuid,
-      percentage: percentage
+      result: result 
     }));
   }
 

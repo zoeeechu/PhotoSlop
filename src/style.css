@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Darumadrop+One&display=swap');
+@import "tailwindcss";
+
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 640px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+body {
+  font-family: 'Darumadrop One', system-ui, sans-serif;
+  background-color: #FFEEEB;
+}

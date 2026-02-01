@@ -1,0 +1,56 @@
+{
+    "type": "icons-available",
+    "from": "server",
+    "icons": ["ava", "cubert", "potat"] 
+}
+{
+    "type": "icon-selection",
+    "from": "client",
+    "icon": "potat"
+}
+{
+    "type": "icon-disabled",
+    "from": "server",
+    "icon": "cubert"
+}
+{
+    "type": "name-entry",
+    "from": "client",
+    "name": "Novel"
+}
+{
+    "type": "name-validation",
+    "from": "server",
+    "guid": "487e2d70-0b7a-4fc5-a4c4-227fadbabbd8"
+}
+{
+    "type": "microgame-start",
+    "from": "server",
+    "time": 5.0,
+    "mask": [
+        {"x": 400, "y": 324},
+        {"x": 450, "y": 200},
+        {"x": 230, "y": 444},
+        {"x": 132, "y": 220}
+    ],
+    "direction": "SHAVE!"
+}
+{
+    "type": "microgame-time-up",
+    "from": "server"
+}
+{
+    "type": "microgame-result",
+    "from": "client",
+    "id": "1",
+    "percentage": 73.3
+}
+{
+    "type": "microgame-end",
+    "from": "server"
+}
+{
+    "type": "display-text",
+    "from": "server",
+    "text": "You won!"
+}

@@ -97,7 +97,7 @@
 {#if page === "enter"}
   <div class="gap-2 p-5 mt-2 flex flex-col items-center justify-center">
     <div class="flex items-center justify-center">
-      <img src="/images/logo.svg" alt="My App Logo" class="logo w-30 mt-5" />
+      <img src="/images/logo.svg" alt="Logo" class="logo w-30 mt-5" />
     </div>
     <div class="flex flex-row gap-3">
       <h1 class="text-3xl">pick your character:</h1>
@@ -122,7 +122,7 @@
     > -->
       <form class="flex gap-2" on:submit|preventDefault={sendText}>
         <input class="border p-2 rounded-lg" bind:value={name} />
-        <button class="border p-2 rounded-lg" type="submit">Start</button>
+        <button class="border p-2 rounded-lg disabled:bg-gray-300 disabled:border-gray-500 disabled:text-gray-500" type="submit" disabled={!selectedCharacter || !name.trim()}>Start</button>
       </form>
     </div>
   </div>

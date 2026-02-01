@@ -52,7 +52,7 @@ export type MicrogameResultPacket = {
   type: "microgame-result";
   from: "client";
   id: string;
-  percentage: number;
+  result: { x: number; y: number }[];
 };
 
 export type MicrogameEndPacket = {

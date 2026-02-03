@@ -37,8 +37,8 @@
       };
 
       p.draw = () => {
-        if (!gameActive) return;
         drawMaskOutline(p);
+        if (!gameActive) return;
         if (isDrawing) {
           p.stroke(0, 0, 255);
           p.strokeWeight(8);
@@ -50,6 +50,8 @@
         if (timeRemaining <= 0) {
           endGame(p);
         }
+        drawMaskOutline(p);
+
       };
 
       p.mousePressed = () => {

@@ -38,7 +38,7 @@
 
       p.draw = () => {
         if (!gameActive) return;
-
+        drawMaskOutline(p);
         if (isDrawing) {
           p.stroke(0, 0, 255);
           p.strokeWeight(8);

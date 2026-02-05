@@ -109,8 +109,9 @@ func handleGame(w http.ResponseWriter, r *http.Request) {
 				validatedCount := len(validatedClients)
 				clientsMu.Unlock()
 				
-				if validatedCount == 3 && !gameStarted {
-					startMicrogame()
+				if validatedCount == 1 && !gameStarted {
+					gameStarted = true
+					go microgameLoop()
 				}
 			} else if packet["type"] == "microgame-result" {
 				if id, ok := packet["id"].(string); ok {
@@ -234,7 +235,6 @@ func broadcastAvailableIcons() {
 }
 
 func startMicrogame() {
-	gameStarted = true
 	data := messages["microgame-start"]
 	
 	clientsMu.Lock()
@@ -244,7 +244,31 @@ func startMicrogame() {
 		}
 	}
 	clientsMu.Unlock()
-	log.Println("Started microgame for 3 players")
+	log.Println("Started microgame")
+}
+
+func microgameLoop() {
+	toggle := false
+	for {
+		if toggle {
+			msg := map[string]interface{}{
+				"type": "display-text",
+				"from": "server",
+				"text": "Test message",
+			}
+			data, _ := json.Marshal(msg)
+			clientsMu.Lock()
+			for conn := range clients {
+				conn.WriteMessage(websocket.TextMessage, data)
+			}
+			clientsMu.Unlock()
+			log.Println("Sent display-text")
+		} else {
+			startMicrogame()
+		}
+		toggle = !toggle
+		time.Sleep(7 * time.Second)
+	}
 }
 
 func determineWinner() {

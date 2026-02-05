@@ -17,6 +17,20 @@
   let scale = 1;
   let scaledDrawnPoints: { x: number; y: number }[] = [];
 
+  $: if (mask && timeLimit) {
+    resetGame();
+  }
+
+  function resetGame() {
+    drawnPoints = [];
+    isDrawing = false;
+    timeRemaining = timeLimit;
+    gameActive = true;
+    if (p5Instance) {
+      p5Instance.background(255);
+    }
+  }
+
   onMount(() => {
     const sketch = (p: p5) => {
       p.setup = () => {

@@ -4,7 +4,7 @@
   import CharacterSelector from "./CharacterSelector.svelte";
   import DrawingMicrogame from "./DrawingMicrogame.svelte";
   import type { GamePacket } from "./lib/types/packets";
-  import { handlePacket, availableIcons, nameValidated, microgameData, playerGuid, displayText } from "./lib/network/handlePacket";
+  import { handlePacket, availableIcons, nameValidated, microgameData, playerGuid, displayText, currentPage } from "./lib/network/handlePacket";
   let socket: WebSocket;
   let status = "Connecting...";
   let statusVisible = false;
@@ -13,13 +13,8 @@
   let buttonsDisabled = true;
   let message = {};
 
-  let page = "enter";
   let name = "";
   let selectedCharacter: string | null = null;
-
-  $: if ($nameValidated) {
-    page = "game";
-  }
 
   function getWsUrl() {
     const params = new URLSearchParams(window.location.search);
@@ -114,7 +109,7 @@
     direction={$microgameData.direction}
     onComplete={handleMicrogameComplete}
   />
-{:else if page === "enter"}
+{:else if $currentPage === "enter"}
   <div class="gap-2 p-5 mt-2 flex flex-col items-center justify-center">
     <div class="flex items-center justify-center">
       <img src="/images/logo.svg" alt="Logo" class="logo w-30 mt-5" />

@@ -6,6 +6,7 @@ export const nameValidated = writable<string | null>(null);
 export const microgameData = writable<MicrogameStartPacket | null>(null);
 export const playerGuid = writable<string | null>(null);
 export const displayText = writable<string | null>(null);
+export const currentPage = writable<"enter" | "game">("enter");
 
 export function handlePacket(packet: GamePacket) {
   console.log("From server:", packet.type);
@@ -24,6 +25,8 @@ export function handlePacket(packet: GamePacket) {
       console.log(packet.guid);
       nameValidated.set(packet.guid);
       playerGuid.set(packet.guid);
+      displayText.set(null);
+      currentPage.set("game");
       break;
 
     case "microgame-time-up": 
@@ -43,6 +46,7 @@ export function handlePacket(packet: GamePacket) {
     case "display-text":
       console.log(packet.text);
       displayText.set(packet.text);
+      microgameData.set(null);
       break;
   }
 }
